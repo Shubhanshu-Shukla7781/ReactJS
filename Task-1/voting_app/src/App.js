@@ -6,7 +6,7 @@ class App extends React.Component {
   {
     super()
     this.state = {
-      languages: [
+      voteParty: [
         { name: "Javascript", vote: 0 },
         { name: "Python", vote: 0 },
         { name: "Java", vote: 0 },
@@ -19,7 +19,7 @@ class App extends React.Component {
   //resetState function is used to setState to initial state from where this game started 
   resetState(){
     this.setState({
-      languages: [
+      voteParty: [
         { name: "Javascript", vote: 0 },
         { name: "Python", vote: 0 },
         { name: "Java", vote: 0 },
@@ -32,22 +32,23 @@ class App extends React.Component {
   componentDidMount() {
     if (window.localStorage.getItem('votedetails')) {
       this.setState({
-        languages: JSON.parse(window.localStorage.getItem('votedetails'))
+        voteParty: JSON.parse(window.localStorage.getItem('votedetails'))
       })
     }
   }
   // componentDidUpdate for storing the current state values into the local storage
   componentDidUpdate( prevState) {
-    if(this.state.languages !== prevState.language){
-      window.localStorage.setItem('votedetails', JSON.stringify(this.state.languages))
+    console.log("prevState",this.state.voteParty);
+    if(this.state.voteParty !== prevState){
+      window.localStorage.setItem('votedetails', JSON.stringify(this.state.voteParty))
     }
   }
   // Incrementing the vote count by one for the respective language
   addition(index) {
-    let arr= this.state.languages;
+    let arr= this.state.voteParty;
     arr[index].vote++;
     this.setState({
-      languages: arr.sort((a, b) => b.vote - a.vote)
+      voteParty: arr.sort((a, b) => b.vote - a.vote)
     });
   }
   render()
@@ -56,7 +57,7 @@ class App extends React.Component {
    <Header/>
    <div className="box">
           {
-            this.state.languages.map(({name,vote}, index)=>
+            this.state.voteParty.map(({name,vote}, index)=>
               <div key={index} className='item'>
                 
                 <div className='name'>{name}</div>

@@ -85,7 +85,7 @@ const App = () => {
   if (JSON.parse(localStorage.getItem("myData"))) {
     voteParty = JSON.parse(localStorage.getItem("myData"));
   }
-  const [curr, nextState] = useState(voteParty);
+  const [curr, setNextState] = useState(voteParty);
 
   const reset = () => {
     const currParty = [
@@ -95,12 +95,12 @@ const App = () => {
       { name: "C++", vote: 0 },
       { name: "Kotlin", vote: 0 },
     ];
-    nextState(currParty);
+    setNextState(currParty);
   };
   useEffect(() => {
     const getData = JSON.parse(localStorage.getItem("myData"));
     if (getData) {
-      nextState(getData);
+      setNextState(getData);
     }
   }, []);
   useEffect(() => {
@@ -112,7 +112,7 @@ const App = () => {
     let arr = [...curr];
     arr[index].vote++;
     let newarr = arr.sort((a, b) => b.vote - a.vote);
-    nextState(newarr);
+    setNextState(newarr);
   };
   return (
     <>

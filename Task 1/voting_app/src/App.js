@@ -1,5 +1,5 @@
-import React , {useState} from'react';
-import Header from './Header';
+import React, { useEffect, useState } from "react";
+import Header from "./Header";
 
 // class App extends React.Component {
 //   constructor()
@@ -16,7 +16,7 @@ import Header from './Header';
 //     }
 //   }
 
-//   //resetState function is used to setState to initial state from where this game started 
+//   //resetState function is used to setState to initial state from where this game started
 //   resetState(){
 //     this.setState({
 //       voteParty: [
@@ -53,76 +53,93 @@ import Header from './Header';
 //   }
 //   render()
 //   {
-  // return (<>
-  //  <Header/>
-  //  <div className="box">
-  //         {
-  //           this.state.voteParty.map(({name,vote}, index)=>
-  //             <div key={index} className='item'>
-                
-  //               <div className='name'>{name}</div>
-  //               <div className='count' >{vote}</div>
-  //               <button className='votebutton' onClick={this.addition.bind(this, index)}>Vote For Me</button>
-  //             </div>
-  //           )
-  //         }
-  //       </div>
+// return (<>
+//  <Header/>
+//  <div className="box">
+//         {
+//           this.state.voteParty.map(({name,vote}, index)=>
+//             <div key={index} className='item'>
 
-  //       <button className='clearbutton' onClick={()=>{this.resetState()}}>Clear All</button>
-  //       </>
-  // );
+//               <div className='name'>{name}</div>
+//               <div className='count' >{vote}</div>
+//               <button className='votebutton' onClick={this.addition.bind(this, index)}>Vote For Me</button>
+//             </div>
+//           )
+//         }
+//       </div>
+
+//       <button className='clearbutton' onClick={()=>{this.resetState()}}>Clear All</button>
+//       </>
+// );
 // }
 // }
 
-
-const App=()=>{
-  const voteParty=[
+const App = () => {
+  let voteParty = [
     { name: "Javascript", vote: 0 },
     { name: "Python", vote: 0 },
     { name: "Java", vote: 0 },
     { name: "C++", vote: 0 },
     { name: "Kotlin", vote: 0 },
   ];
-        const [curr,nextState]=useState(voteParty);
-        
-        const reset=()=>{
-          const currParty=[
-            { name: "Javascript", vote: 0 },
-            { name: "Python", vote: 0 },
-            { name: "Java", vote: 0 },
-            { name: "C++", vote: 0 },
-            { name: "Kotlin", vote: 0 },
-          ];
-          nextState(currParty);
-        }
-       const addition=(index)=>{
-        
-          let arr=curr;
-          arr[index].vote++;
-          let newarr=arr.sort((a,b)=>b.vote-a.vote)
-          nextState(newarr);
-          console.log(curr);
-          console.log("voteParty"+voteParty);
-        }
-        return (<>
-          <Header/>
-          <div className="box">
-          {console.log("Current"+voteParty)};
-          <>
-                 {
-                   curr.map(({name,vote}, index)=>
-                     <div key={index} className='item'>
-                       <div className='name'>{name}</div>
-                       <div className='count' >{vote}</div>
-                       <button className='votebutton' onClick={()=>{addition(index)}}>Vote For Me</button>
-                     </div>
-                   )
-                 }
-                 </>
-               </div>
-               <button className='clearbutton' onClick={reset}>Clear All</button>
-               </>
-         );
-}
+  if (JSON.parse(localStorage.getItem("myData"))) {
+    voteParty = JSON.parse(localStorage.getItem("myData"));
+  }
+  const [curr, nextState] = useState(voteParty);
+
+  const reset = () => {
+    const currParty = [
+      { name: "Javascript", vote: 0 },
+      { name: "Python", vote: 0 },
+      { name: "Java", vote: 0 },
+      { name: "C++", vote: 0 },
+      { name: "Kotlin", vote: 0 },
+    ];
+    nextState(currParty);
+  };
+  useEffect(() => {
+    const getData = JSON.parse(localStorage.getItem("myData"));
+    if (getData) {
+      nextState(getData);
+    }
+  }, []);
+  useEffect(() => {
+    const info = JSON.stringify(curr);
+    localStorage.setItem("myData", info);
+  }, [curr]);
+
+  const addition = (index) => {
+    let arr = [...curr];
+    arr[index].vote++;
+    let newarr = arr.sort((a, b) => b.vote - a.vote);
+    nextState(newarr);
+  };
+  return (
+    <>
+      <Header />
+      <div className="box">
+        <>
+          {curr.map(({ name, vote }, index) => (
+            <div key={index} className="item">
+              <div className="name">{name}</div>
+              <div className="count">{vote}</div>
+              <button
+                className="votebutton"
+                onClick={() => {
+                  addition(index);
+                }}
+              >
+                Vote For Me
+              </button>
+            </div>
+          ))}
+        </>
+      </div>
+      <button className="clearbutton" onClick={reset}>
+        Clear All
+      </button>
+    </>
+  );
+};
 
 export default App;

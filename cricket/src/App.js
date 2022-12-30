@@ -2,11 +2,13 @@ import React from 'react';
 import Data from './Data';
 import Card from './Card';
 
-let App=()=>{
-    return(
+let App = () => {
+    return (
         <>
-        <h1>BEST INDIAN CRICKETERS</h1>
-        <Card
+
+            <h1>BEST INDIAN CRICKETERS</h1>
+            <div>
+                {/*  <Card
         name={Data[0].name}
         img_link={Data[0].img_link} 
         work={Data[0].work}
@@ -30,7 +32,22 @@ let App=()=>{
         name={Data[4].name}
         img_link={Data[4].img_link} 
         work={Data[4].work}
-        ></Card>
+        ></Card>  */}
+
+
+
+                {
+                    Data.map((data) => {
+                        return (
+                            <Card
+                                name={data.name}
+                                img_link={data.img_link}
+                                work={data.work}>
+                            </Card>
+                        )
+                    })
+                }
+            </div>
         </>
     )
 }
